@@ -1,0 +1,157 @@
+/* ==========================================================================
+   Keyframes and the colour burst.
+   ========================================================================== */
+
+@keyframes drift-a {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  100% { transform: translate3d(9vmax, 7vmax, 0) scale(1.18); }
+}
+@keyframes drift-b {
+  0%   { transform: translate3d(0, 0, 0) scale(1.06); }
+  100% { transform: translate3d(-11vmax, 9vmax, 0) scale(0.9); }
+}
+@keyframes drift-c {
+  0%   { transform: translate3d(0, 0, 0) scale(0.94); }
+  100% { transform: translate3d(8vmax, -8vmax, 0) scale(1.14); }
+}
+@keyframes drift-d {
+  0%   { transform: translate3d(0, 0, 0) scale(1.1); }
+  100% { transform: translate3d(-7vmax, -6vmax, 0) scale(0.92); }
+}
+
+@keyframes shimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+@keyframes shimmer-bg {
+  0%   { background-position: 140% 0; }
+  100% { background-position: -40% 0; }
+}
+
+@keyframes pulse-dot {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(var(--accent-rgb), 0.55); }
+  50%      { box-shadow: 0 0 0 6px rgba(var(--accent-rgb), 0); }
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(5px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes slide-in {
+  from { opacity: 0; transform: translateX(-14px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes pop {
+  0%   { opacity: 0; transform: scale(0.82); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* When an agent finishes, its chip settles with a slight overshoot and a flash
+   of the lane colour — the visual equivalent of an argument landing. */
+@keyframes land {
+  0%   { transform: translateX(-8px) scale(0.97); box-shadow: 0 0 0 0 rgba(var(--lane-rgb), 0.5); }
+  55%  { transform: translateX(2px) scale(1.015); box-shadow: 0 0 28px -6px rgba(var(--lane-rgb), 0.7); }
+  100% { transform: translateX(0) scale(1); box-shadow: 0 0 0 0 rgba(var(--lane-rgb), 0); }
+}
+
+@keyframes sweep {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(340%); }
+}
+
+@keyframes bounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.45; }
+  30%           { transform: translateY(-4px); opacity: 1; }
+}
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(14px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes toast-out {
+  to { opacity: 0; transform: translateX(24px); }
+}
+
+/* ==========================================================================
+   The colour burst.
+
+   Fired from the centre of the search bar the moment a question is submitted.
+   Three layers: an expanding ring, a radial wash in the domain colour, and a
+   scatter of particles that inherit the accent. It lasts under a second and
+   removes itself, so it never sits in the DOM competing for paint.
+   ========================================================================== */
+
+.burst {
+  position: fixed;
+  z-index: 30;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}
+
+.burst__ring {
+  position: absolute;
+  left: 0; top: 0;
+  width: 30px; height: 30px;
+  margin: -15px 0 0 -15px;
+  border-radius: 50%;
+  border: 2px solid rgba(var(--accent-rgb), 0.85);
+  animation: ring-out 900ms var(--ease) forwards;
+}
+.burst__ring:nth-child(2) { animation-delay: 110ms; border-color: rgba(var(--judge-rgb), 0.7); }
+.burst__ring:nth-child(3) { animation-delay: 220ms; border-color: rgba(var(--supporter-rgb), 0.55); }
+
+@keyframes ring-out {
+  0%   { transform: scale(0.4); opacity: 0.95; border-width: 3px; }
+  100% { transform: scale(26); opacity: 0; border-width: 0.5px; }
+}
+
+.burst__wash {
+  position: absolute;
+  left: 0; top: 0;
+  width: 620px; height: 620px;
+  margin: -310px 0 0 -310px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(var(--accent-rgb), 0.4) 0%, transparent 62%);
+  animation: wash 850ms var(--ease) forwards;
+}
+@keyframes wash {
+  0%   { transform: scale(0.2); opacity: 0; }
+  22%  { opacity: 0.9; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+.burst__spark {
+  position: absolute;
+  left: 0; top: 0;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--spark, var(--accent));
+  box-shadow: 0 0 12px 1px var(--spark, var(--accent));
+  animation: spark 780ms var(--ease) forwards;
+}
+@keyframes spark {
+  0%   { transform: translate(0, 0) scale(1); opacity: 1; }
+  100% { transform: translate(var(--dx), var(--dy)) scale(0.15); opacity: 0; }
+}
+
+/* A one-off flash across the whole aurora when the domain is identified. */
+.aurora--flash { animation: aurora-flash 1100ms var(--ease); }
+@keyframes aurora-flash {
+  0%   { opacity: 0.82; filter: blur(90px) saturate(140%); }
+  30%  { opacity: 1;    filter: blur(70px) saturate(215%); }
+  100% { opacity: 0.82; filter: blur(90px) saturate(140%); }
+}
+
+/* Typing caret used while an agent's text streams in. */
+.caret {
+  display: inline-block;
+  width: 2px; height: 0.95em;
+  vertical-align: -0.13em;
+  background: currentColor;
+  animation: blink 1s steps(2) infinite;
+}
+@keyframes blink { 50% { opacity: 0; } }

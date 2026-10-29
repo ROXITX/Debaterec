@@ -1,0 +1,309 @@
+/* ==========================================================================
+   The debate arena.
+
+   Three lanes, one per role. A candidate chip is created in the Supporter lane
+   the moment that call goes out, and moves right as each round finishes. The
+   point is that the multi-agent structure is legible at a glance — you can see
+   that eight candidates are being argued over, not that "something is loading".
+   ========================================================================== */
+
+.understanding { display: grid; gap: var(--gap-3); }
+
+.understanding__row {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+}
+
+.pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 13px;
+  border-radius: var(--r-pill);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  animation: pop var(--t-base) var(--spring) both;
+}
+.pill--hard {
+  background: rgba(var(--critic-rgb), 0.12);
+  border-color: rgba(var(--critic-rgb), 0.4);
+  color: #ffd7de;
+}
+.pill--soft {
+  background: rgba(var(--accent-rgb), 0.11);
+  border-color: var(--accent-line);
+  color: var(--ink);
+}
+.pill--domain {
+  background: linear-gradient(120deg, rgba(var(--accent-rgb), 0.28), rgba(var(--accent-rgb), 0.08));
+  border-color: var(--accent-line);
+  color: #fff;
+  font-weight: 600;
+}
+.pill__kind {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.72;
+}
+.pill__src {
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.55;
+  padding-left: 2px;
+}
+
+/* --- pipeline trace ------------------------------------------------------ */
+
+.trace { display: flex; align-items: stretch; gap: 0; flex-wrap: wrap; margin-bottom: var(--gap-4); }
+
+.trace__step {
+  position: relative;
+  display: flex; align-items: center; gap: 10px;
+  padding: 11px 18px 11px 16px;
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-right: none;
+  font-size: 13px;
+  color: var(--ink-faint);
+  transition: all var(--t-base) var(--ease);
+}
+.trace__step:first-child { border-radius: var(--r-pill) 0 0 var(--r-pill); padding-left: 20px; }
+.trace__step:last-child  { border-radius: 0 var(--r-pill) var(--r-pill) 0; border-right: 1px solid var(--border); }
+
+.trace__step[data-state="active"] {
+  color: var(--ink);
+  background: rgba(var(--accent-rgb), 0.14);
+  border-color: var(--accent-line);
+}
+.trace__step[data-state="done"] { color: var(--ink-soft); background: var(--surface-2); }
+
+.trace__dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--ink-faint);
+  flex-shrink: 0;
+  transition: all var(--t-base) var(--ease);
+}
+.trace__step[data-state="active"] .trace__dot {
+  background: var(--accent);
+  box-shadow: 0 0 0 4px rgba(var(--accent-rgb), 0.22);
+  animation: pulse-dot 1.3s var(--ease) infinite;
+}
+.trace__step[data-state="done"] .trace__dot { background: var(--supporter); }
+
+.trace__time {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--ink-faint);
+  opacity: 0;
+  transition: opacity var(--t-base) var(--ease);
+}
+.trace__step[data-state="done"] .trace__time { opacity: 1; }
+
+/* --- arena grid ---------------------------------------------------------- */
+
+.arena {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--gap-3);
+}
+
+.lane {
+  position: relative;
+  display: flex; flex-direction: column;
+  min-height: 200px;
+  padding: 16px 14px 14px;
+  border-radius: var(--r-lg);
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  transition: border-color var(--t-base) var(--ease), box-shadow var(--t-base) var(--ease);
+  overflow: hidden;
+}
+
+/* A soft wash of the role's colour along the top edge of its lane. */
+.lane::before {
+  content: "";
+  position: absolute; inset: 0 0 auto 0;
+  height: 120px;
+  background: linear-gradient(180deg, rgba(var(--lane-rgb), 0.13), transparent);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--t-slow) var(--ease);
+}
+.lane[data-active="true"]::before { opacity: 1; }
+.lane[data-active="true"] {
+  border-color: rgba(var(--lane-rgb), 0.42);
+  box-shadow: 0 0 50px -18px rgba(var(--lane-rgb), 0.75);
+}
+
+.lane--supporter { --lane: var(--supporter); --lane-rgb: var(--supporter-rgb); }
+.lane--critic    { --lane: var(--critic);    --lane-rgb: var(--critic-rgb); }
+.lane--judge     { --lane: var(--judge);     --lane-rgb: var(--judge-rgb); }
+
+.lane__head {
+  display: flex; align-items: center; gap: 10px;
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+  position: relative; z-index: 1;
+}
+.lane__icon {
+  width: 30px; height: 30px;
+  display: grid; place-items: center;
+  border-radius: 9px;
+  background: rgba(var(--lane-rgb), 0.16);
+  border: 1px solid rgba(var(--lane-rgb), 0.34);
+  color: var(--lane);
+  flex-shrink: 0;
+}
+.lane__icon svg { width: 16px; height: 16px; }
+.lane__title { font-size: 14px; font-weight: 640; color: var(--ink); }
+.lane__role  { font-size: 11px; color: var(--ink-muted); }
+.lane__count {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 3px 9px;
+  border-radius: var(--r-pill);
+  background: rgba(var(--lane-rgb), 0.14);
+  color: var(--lane);
+}
+
+.lane__body {
+  display: flex; flex-direction: column; gap: 8px;
+  position: relative; z-index: 1;
+  max-height: 460px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.lane__empty {
+  display: grid; place-items: center;
+  flex: 1;
+  min-height: 120px;
+  color: var(--ink-faint);
+  font-size: 12.5px;
+  text-align: center;
+  padding: 0 12px;
+}
+
+/* --- candidate chips inside a lane --------------------------------------- */
+
+.arg {
+  position: relative;
+  padding: 11px 12px;
+  border-radius: var(--r-md);
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid var(--border);
+  transition: all var(--t-base) var(--ease);
+  animation: slide-in var(--t-base) var(--ease) both;
+}
+.arg[data-status="thinking"] {
+  border-color: rgba(var(--lane-rgb), 0.34);
+  background: rgba(var(--lane-rgb), 0.06);
+}
+.arg[data-status="done"] {
+  border-color: rgba(var(--lane-rgb), 0.26);
+  animation: land 520ms var(--spring) both;
+}
+
+.arg__top { display: flex; align-items: center; gap: 8px; }
+.arg__title {
+  flex: 1;
+  font-size: 12.8px;
+  font-weight: 560;
+  color: var(--ink);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.arg__score {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: var(--r-pill);
+  background: rgba(var(--lane-rgb), 0.16);
+  color: var(--lane);
+  flex-shrink: 0;
+  animation: pop 380ms var(--spring) both;
+}
+
+.arg__points {
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex; flex-direction: column; gap: 5px;
+}
+.arg__points li {
+  position: relative;
+  padding-left: 13px;
+  font-size: 11.8px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  animation: fade-up 380ms var(--ease) both;
+}
+.arg__points li::before {
+  content: "";
+  position: absolute; left: 0; top: 8px;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: rgba(var(--lane-rgb), 0.75);
+}
+.arg__points li:nth-child(2) { animation-delay: 60ms; }
+.arg__points li:nth-child(3) { animation-delay: 120ms; }
+.arg__points li:nth-child(4) { animation-delay: 180ms; }
+
+.arg__verdict {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin-top: 8px;
+  padding: 3px 9px;
+  border-radius: var(--r-pill);
+  font-size: 10.5px;
+  font-weight: 640;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.arg__verdict[data-v="recommend"] { background: rgba(var(--supporter-rgb), 0.16); color: var(--supporter); }
+.arg__verdict[data-v="consider"]  { background: rgba(240, 180, 41, 0.16); color: var(--unknown); }
+.arg__verdict[data-v="reject"]    { background: rgba(var(--critic-rgb), 0.16); color: var(--critic); }
+
+/* --- the thinking indicator ---------------------------------------------- */
+
+.think { display: flex; align-items: center; gap: 7px; margin-top: 8px; }
+.think__bar {
+  flex: 1;
+  height: 3px;
+  border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, 0.07);
+  overflow: hidden;
+  position: relative;
+}
+.think__bar::after {
+  content: "";
+  position: absolute; inset: 0;
+  width: 42%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, transparent, var(--lane), transparent);
+  animation: sweep 1.25s var(--ease) infinite;
+}
+.think__label {
+  font-size: 10.5px;
+  color: var(--ink-faint);
+  letter-spacing: 0.05em;
+}
+
+.dots { display: inline-flex; gap: 3px; }
+.dots i {
+  width: 4px; height: 4px; border-radius: 50%;
+  background: var(--lane);
+  animation: bounce 1.1s var(--ease) infinite;
+}
+.dots i:nth-child(2) { animation-delay: 0.13s; }
+.dots i:nth-child(3) { animation-delay: 0.26s; }
+
+@media (max-width: 900px) {
+  .arena { grid-template-columns: 1fr; }
+  .lane__body { max-height: 300px; }
+}

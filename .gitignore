@@ -218,3 +218,20 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# --- DebateRec project-specific ---
+# local config / secrets
+.env
+.claude/
+# generated runtime + experiment output
+data/processed/*.sqlite3
+data/processed/*.json
+# large media and third-party course templates (kept on disk, not versioned)
+data/processed/*.mp4
+data/processed/*.docx
+*.mp4
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

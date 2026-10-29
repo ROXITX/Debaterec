@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="deep">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="dark" />
+<title>DebateRec — recommendations that argue with themselves</title>
+<meta name="description" content="An evidence-grounded, debate-based recommender. Supporter, Critic and Judge agents argue over retrieved candidates and produce an explainable ranking across seven domains." />
+<link rel="icon" href="/static/assets/favicon.svg" type="image/svg+xml" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="/static/css/tokens.css" />
+<link rel="stylesheet" href="/static/css/base.css" />
+<link rel="stylesheet" href="/static/css/layout.css" />
+<link rel="stylesheet" href="/static/css/arena.css" />
+<link rel="stylesheet" href="/static/css/components.css" />
+<link rel="stylesheet" href="/static/css/animations.css" />
+</head>
+<body>
+
+<!-- Atmosphere -->
+<div class="aurora" id="aurora" aria-hidden="true">
+  <div class="aurora__blob aurora__blob--a"></div>
+  <div class="aurora__blob aurora__blob--b"></div>
+  <div class="aurora__blob aurora__blob--c"></div>
+  <div class="aurora__blob aurora__blob--d"></div>
+</div>
+<div class="mesh" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<main class="shell">
+
+  <header class="masthead">
+    <div class="brand">
+      <div class="brand__mark" id="brandMark" aria-hidden="true"></div>
+      <div>
+        <div class="brand__name">DebateRec</div>
+        <div class="brand__tag">Supporter · Critic · Judge</div>
+      </div>
+    </div>
+    <div style="display: flex; gap: 12px; align-items: center;">
+      <select id="modelSelect" title="Reasoning backend" style="background: transparent; color: inherit; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; padding: 2px 6px; font-size: 13px;">
+        <option value="gemini" style="color: #000">Online · Gemini</option>
+        <option value="ollama" style="color: #000">Offline · Ollama</option>
+        <option value="mock" style="color: #000">Mock · Instant</option>
+      </select>
+      <select id="ollamaModelSelect" title="Local Ollama model" hidden style="background: transparent; color: inherit; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; padding: 2px 6px; font-size: 13px;">
+      </select>
+      <div class="status" id="status" data-live="pending" title="Reasoning backend">
+        <span class="status__dot"></span>
+        <span id="statusText">connecting…</span>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <h1 class="hero__title">Recommendations that<br /><em>argue with themselves</em></h1>
+    <p class="hero__sub">
+      Describe what you want in your own words. The system extracts your constraints,
+      retrieves candidates, then makes three agents argue over each one before it ranks anything.
+    </p>
+
+    <form class="search" id="form" autocomplete="off">
+      <div class="search__field">
+        <textarea
+          class="search__input"
+          id="query"
+          rows="1"
+          placeholder="a funny sci-fi movie from after 2015, preferably under two hours…"
+          aria-label="Describe what you are looking for"></textarea>
+        <button class="search__go" id="submit" type="submit">
+          <span id="submitLabel">Start the debate</span>
+        </button>
+      </div>
+
+      <div class="search__meta">
+        <span class="search__hint"><kbd>Enter</kbd> to run · <kbd>Shift</kbd>+<kbd>Enter</kbd> for a new line</span>
+        <span class="search__hint" id="domainHint">Domain detected automatically</span>
+      </div>
+
+      <div class="rail" id="rail" role="group" aria-label="Choose a catalogue"></div>
+      <div class="rail">
+        <button class="chip chip--toggle" id="curatedToggle" type="button" aria-pressed="false"
+                title="Search only the hand-checked records, excluding procedurally generated catalogue filler">
+          <span class="switch" aria-hidden="true"><i></i></span>
+          <span>Curated records only</span>
+        </button>
+      </div>
+      <div class="examples" id="examples"></div>
+    </form>
+  </section>
+
+  <div id="notices"></div>
+
+  <!-- Stage 1 + 2: what the system understood and what it retrieved -->
+  <section class="stage hidden" id="understandStage">
+    <div class="stage__head">
+      <h2 class="stage__title">What the system understood</h2>
+      <span class="stage__note" id="understandNote"></span>
+    </div>
+    <div class="trace" id="trace"></div>
+    <div class="glass" style="padding:18px 20px">
+      <div class="understanding" id="understanding"></div>
+    </div>
+  </section>
+
+  <!-- Stage 3: the debate -->
+  <section class="stage hidden" id="arenaStage">
+    <div class="stage__head">
+      <h2 class="stage__title">The debate</h2>
+      <span class="stage__note" id="arenaNote"></span>
+      <span class="stage__spacer"></span>
+      <span class="stage__note mono" id="arenaClock"></span>
+    </div>
+    <div class="arena" id="arena"></div>
+  </section>
+
+  <!-- Stage 4: results -->
+  <section class="stage hidden" id="resultsStage">
+    <div class="stage__head">
+      <h2 class="stage__title">The verdict</h2>
+      <span class="stage__note" id="resultsNote"></span>
+    </div>
+    <div class="results" id="results"></div>
+    <div class="metrics hidden" id="metrics"></div>
+  </section>
+
+</main>
+
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+<script type="module" src="/static/js/app.js"></script>
+</body>
+</html>

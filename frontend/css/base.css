@@ -1,0 +1,170 @@
+/* ==========================================================================
+   Reset, canvas and the aurora field.
+   ========================================================================== */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.62;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4 { margin: 0; font-weight: 620; letter-spacing: -0.022em; line-height: 1.18; }
+p { margin: 0; }
+button, input, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; border: none; background: none; }
+a { color: inherit; }
+
+/* Inline icons carry no width/height attributes, so give every SVG a sane
+   intrinsic size. Anything that needs a different one overrides it below with
+   higher specificity. Without this a bare icon expands to fill its container. */
+svg { width: 16px; height: 16px; flex: none; }
+
+::selection { background: rgba(var(--accent-rgb), 0.32); }
+
+/* --- scrollbars: styled, but never hidden ------------------------------- */
+* { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.14) transparent; }
+*::-webkit-scrollbar { width: 9px; height: 9px; }
+*::-webkit-scrollbar-track { background: transparent; }
+*::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: var(--r-pill);
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+*::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.22); background-clip: content-box; }
+
+/* ==========================================================================
+   The aurora field.
+
+   Four large, heavily blurred radial blobs drifting on long, mismatched
+   durations so the background never visibly loops. They inherit --accent, so
+   the entire room changes colour the moment a domain is detected.
+   ========================================================================== */
+
+.aurora {
+  position: fixed;
+  inset: -25vmax;
+  z-index: 0;
+  pointer-events: none;
+  filter: blur(78px) saturate(155%);
+  opacity: 1;
+  /* Opacity is driven per-frame by the scroll handler, so it must not be
+     transitioned here or the fade lags behind the scroll. */
+  transition: filter var(--t-slow) var(--ease);
+}
+
+.aurora__blob {
+  position: absolute;
+  border-radius: 50%;
+  mix-blend-mode: screen;
+  will-change: transform;
+}
+
+.aurora__blob--a {
+  width: 62vmax; height: 62vmax;
+  left: -4vmax; top: -10vmax;
+  background: radial-gradient(circle at 50% 50%, rgba(var(--accent-rgb), 0.52), transparent 62%);
+  animation: drift-a 34s var(--ease) infinite alternate;
+}
+.aurora__blob--b {
+  width: 54vmax; height: 54vmax;
+  right: -6vmax; top: -6vmax;
+  background: radial-gradient(circle at 50% 50%, rgba(var(--judge-rgb), 0.34), transparent 64%);
+  animation: drift-b 46s var(--ease) infinite alternate;
+}
+.aurora__blob--c {
+  width: 66vmax; height: 66vmax;
+  left: 10vmax; top: 18vmax;
+  background: radial-gradient(circle at 50% 50%, rgba(var(--supporter-rgb), 0.19), transparent 66%);
+  animation: drift-c 52s var(--ease) infinite alternate;
+}
+.aurora__blob--d {
+  width: 50vmax; height: 50vmax;
+  right: 2vmax; top: 26vmax;
+  background: radial-gradient(circle at 50% 50%, rgba(var(--critic-rgb), 0.20), transparent 66%);
+  animation: drift-d 40s var(--ease) infinite alternate;
+}
+
+/* The aurora is anchored to the viewport, so as the page scrolls past the hero
+   it must fade out — otherwise the coloured haze sits behind dense text
+   further down and hurts contrast. */
+.aurora::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 0%, transparent 22%, var(--bg) 74%);
+  opacity: 0.96;
+}
+
+/* A faint film grain over the gradients. Without it, large blurred areas band
+   visibly on 8-bit displays, which is the usual tell of a cheap gradient. */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.055;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* A very quiet grid, to give the dark canvas a sense of depth and scale. */
+.mesh {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.35;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse 90% 60% at 50% 0%, #000 20%, transparent 78%);
+  -webkit-mask-image: radial-gradient(ellipse 90% 60% at 50% 0%, #000 20%, transparent 78%);
+}
+
+/* Everything real sits above the atmosphere. */
+.shell { position: relative; z-index: 2; }
+
+/* --- shared utilities ---------------------------------------------------- */
+
+.glass {
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+}
+
+.eyebrow {
+  font-size: 11px;
+  font-weight: 640;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+.mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+.hidden { display: none !important; }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 6px;
+}

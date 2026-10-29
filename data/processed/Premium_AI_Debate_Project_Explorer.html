@@ -1,0 +1,225 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Premium AI Debate Project Explorer</title>
+<style>
+body{margin:0;font-family:Segoe UI,Arial;background:#0f172a;color:#e5e7eb}
+header{background:linear-gradient(90deg,#1d4ed8,#06b6d4);padding:30px;text-align:center}
+main{max-width:1200px;margin:auto;padding:24px}
+.card{background:#111827;border:1px solid #334155;border-radius:14px;padding:20px;margin:18px 0;box-shadow:0 8px 24px rgba(0,0,0,.3)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+h1,h2,h3{color:#fff}
+code,pre{background:#020617;padding:12px;border-radius:10px;display:block;white-space:pre-wrap}
+.badge{display:inline-block;background:#2563eb;padding:5px 10px;border-radius:20px}
+#settings{position:fixed;top:15px;right:15px;background:#111827;border:2px solid #38bdf8;padding:15px;border-radius:10px;width:320px}
+.hidden{display:none}
+button{padding:10px 14px;margin:4px;border:none;border-radius:8px;background:#2563eb;color:white;cursor:pointer}
+table{width:100%;border-collapse:collapse}
+td,th{border:1px solid #334155;padding:8px}
+th{background:#1e293b}
+</style>
+</head>
+<body>
+<header>
+<h1 id="title">Multi-Agent Debate Framework for Natural Language Preference Understanding and Explainable Decision Making</h1>
+</header>
+<main>
+
+
+
+<section id="nlp">
+<div class="card">
+<h2>NLP Title</h2>
+<h3>Multi-Agent Debate Framework for Natural Language Preference Understanding and Explainable Decision Making</h3>
+<p><b>Research Objective</b></p>
+<p>Develop an NLP framework that understands natural-language preferences, generates structured arguments through multiple AI agents, and produces transparent decisions.</p>
+</div>
+
+<div class="grid">
+<div class="card"><h3>NLP Concepts</h3><ul>
+<li>Tokenization</li><li>Normalization</li><li>Lemmatization</li><li>Intent Classification</li><li>NER</li>
+<li>Dependency Parsing</li><li>Embeddings</li><li>Semantic Search</li><li>Prompt Engineering</li><li>Natural Language Generation</li></ul></div>
+
+<div class="card"><h3>Datasets</h3><ul>
+<li>Movie metadata</li><li>Books</li><li>Courses</li><li>Laptops</li><li>Restaurants</li></ul></div>
+</div>
+
+<div class="card">
+<h3>NLP Pipeline</h3>
+<pre>
+Natural Language Query
+ ↓
+Cleaning & Tokenization
+ ↓
+Intent Detection
+ ↓
+Entity Recognition
+ ↓
+Preference Extraction
+ ↓
+Embedding Generation
+ ↓
+Semantic Candidate Retrieval
+ ↓
+AI Debate
+ ↓
+Natural Language Explanation
+</pre>
+</div>
+
+<div class="card">
+<h3>Relation to Recommender Systems</h3>
+<p>NLP is responsible for converting free-text into structured preferences. The recommender then uses those preferences to retrieve and rank suitable items.</p>
+</div>
+</section>
+
+<section id="rec" class="hidden">
+<div class="card">
+<h2>Recommender Title</h2>
+<h3>AI Debate-Based Multi-Domain Recommendation System using Large Language Models</h3>
+<p><b>Research Objective</b></p>
+<p>Create a transparent recommender where recommendations are validated through AI debate before final ranking.</p>
+</div>
+
+<div class="grid">
+<div class="card"><h3>Recommendation Concepts</h3><ul>
+<li>Content-based Filtering</li><li>Collaborative Filtering</li><li>Hybrid Recommendation</li>
+<li>Candidate Generation</li><li>Re-ranking</li><li>Explainable AI</li></ul></div>
+
+<div class="card"><h3>Supported Domains</h3><ul>
+<li>Movies</li><li>Books</li><li>Courses</li><li>Laptops</li><li>Restaurants</li><li>Future: Healthcare</li></ul></div>
+</div>
+
+<div class="card">
+<h3>Recommendation Pipeline</h3>
+<pre>
+User Preferences
+ ↓
+Candidate Retrieval
+ ↓
+Support Agent
+ ↓
+Critic Agent
+ ↓
+Judge Agent
+ ↓
+Ranked Explainable Results
+</pre>
+</div>
+
+<div class="card">
+<h3>Relation to NLP</h3>
+<p>The recommender depends on NLP to understand the user's intent and preferences before retrieval begins.</p>
+</div>
+</section>
+
+<div class="card">
+<h2>Unified Architecture</h2>
+<pre>
+User
+ │
+ ▼
+NLP Engine
+(Intent + Entities + Preferences)
+ │
+ ▼
+Recommendation Engine
+ │
+ ▼
+Support Agent ─────┐
+                   ├──► Judge Agent ─► Final Recommendation
+Critic Agent ──────┘
+</pre>
+</div>
+
+<div class="grid">
+<div class="card">
+<h3>Agent Design</h3>
+<ol>
+<li>Support Agent: argues FOR.</li>
+<li>Critic Agent: argues AGAINST.</li>
+<li>Judge Agent: compares both and ranks.</li>
+</ol>
+</div>
+
+<div class="card">
+<h3>LLM Integration</h3>
+<ul>
+<li>OpenAI API</li>
+<li>Ollama (Local)</li>
+<li>LangGraph orchestration</li>
+<li>FastAPI backend</li>
+</ul>
+</div>
+</div>
+
+<div class="card">
+<h2>Methodology</h2>
+<table>
+<tr><th>Phase</th><th>Description</th></tr>
+<tr><td>1</td><td>Collect multi-domain datasets</td></tr>
+<tr><td>2</td><td>Preprocess data and build embeddings</td></tr>
+<tr><td>3</td><td>Understand user query with NLP</td></tr>
+<tr><td>4</td><td>Retrieve top candidates</td></tr>
+<tr><td>5</td><td>Generate Support and Critic arguments</td></tr>
+<tr><td>6</td><td>Judge ranks recommendations</td></tr>
+<tr><td>7</td><td>Collect feedback for future improvements</td></tr>
+</table>
+</div>
+
+<div class="grid">
+<div class="card"><h3>Evaluation Metrics</h3>
+<ul><li>Precision@K</li><li>Recall@K</li><li>NDCG</li><li>MAP</li><li>BLEU/ROUGE (optional)</li><li>User Satisfaction</li></ul>
+</div>
+<div class="card"><h3>Research Novelty</h3>
+<ul>
+<li>Explainable recommendations</li>
+<li>Debate-driven ranking</li>
+<li>Reusable across multiple domains</li>
+<li>Single framework for NLP + Recommender Systems</li>
+</ul>
+</div>
+</div>
+
+<div class="card">
+<h2>Future Enhancements</h2>
+<ul>
+<li>Voice interface</li>
+<li>Memory-enabled agents</li>
+<li>Multiple expert agents</li>
+<li>Knowledge graph integration</li>
+<li>Real-time personalization</li>
+</ul>
+</div>
+
+</main>
+
+<div id="settings" class="hidden">
+<h3>Hidden Settings</h3>
+<button onclick="showNLP()">NLP Mode</button>
+<button onclick="showREC()">Recommender Mode</button>
+<p>Toggle panel: Ctrl+Shift+S</p>
+</div>
+
+<script>
+let vis=false;
+document.addEventListener('keydown',e=>{
+ if(e.ctrlKey&&e.shiftKey&&e.key.toLowerCase()=='s'){
+  vis=!vis;document.getElementById('settings').classList.toggle('hidden',!vis);
+ }
+});
+function showNLP(){
+ document.getElementById('nlp').classList.remove('hidden');
+ document.getElementById('rec').classList.add('hidden');
+ document.getElementById('title').innerText='Multi-Agent Debate Framework for Natural Language Preference Understanding and Explainable Decision Making';
+}
+function showREC(){
+ document.getElementById('rec').classList.remove('hidden');
+ document.getElementById('nlp').classList.add('hidden');
+ document.getElementById('title').innerText='AI Debate-Based Multi-Domain Recommendation System using Large Language Models';
+}
+</script>
+</body>
+</html>

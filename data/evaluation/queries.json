@@ -1,0 +1,163 @@
+{
+  "note": "Hand-labelled evaluation set (PRD §64). Relevance is graded 3 = strong fit, 2 = reasonable fit, 1 = marginal. Labels were assigned by reading the catalogue records directly, BEFORE running any system, and they are deliberately not derived from the constraint checker — otherwise the constraint-based methods would be scored against their own output and every number would be meaningless.",
+  "grading": {"3": "strong fit", "2": "reasonable fit", "1": "marginal"},
+  "queries": [
+    {
+      "id": "Q01", "domain": "movie",
+      "query": "I want a funny science-fiction movie from after 2015, preferably under two hours",
+      "relevance": {
+        "movie:tt13238346": 3, "movie:tt4633694": 3, "movie:tt9362722": 2,
+        "movie:tt3235888": 2, "movie:tt1631867": 2, "movie:tt1517268": 1
+      }
+    },
+    {
+      "id": "Q02", "domain": "movie",
+      "query": "a dark, tense thriller with a strong twist ending, nothing animated",
+      "relevance": {
+        "movie:tt0114369": 3, "movie:tt0137523": 3, "movie:tt6751668": 3,
+        "movie:tt5052448": 2, "movie:tt2543164": 2, "movie:tt0468569": 1
+      }
+    },
+    {
+      "id": "Q03", "domain": "movie",
+      "query": "an animated film the whole family can watch, under two hours, warm rather than scary",
+      "relevance": {
+        "movie:tt2380307": 3, "movie:tt0910970": 3, "movie:tt0245429": 2,
+        "movie:tt4633694": 2, "movie:tt3606756": 2, "movie:tt0119698": 1
+      }
+    },
+    {
+      "id": "Q04", "domain": "book",
+      "query": "a short practical psychology book under 350 pages, not too theoretical",
+      "relevance": {
+        "book:9780735211292": 3, "book:9780062457714": 3, "book:9780671027032": 2,
+        "book:9780316055437": 2, "book:9780316017930": 2, "book:9780374533557": 1
+      }
+    },
+    {
+      "id": "Q05", "domain": "book",
+      "query": "a rigorous machine learning textbook, I do not mind if it is long",
+      "relevance": {
+        "book:9780262035613": 3, "book:9781492032649": 3, "book:9780132350884": 1
+      }
+    },
+    {
+      "id": "Q06", "domain": "book",
+      "query": "modern science fiction published after 2010 that is genuinely fun to read",
+      "relevance": {
+        "book:9780593135204": 3, "book:9780553418026": 3, "book:9780307887436": 2,
+        "book:9781984801258": 2, "book:9780765382030": 1
+      }
+    },
+    {
+      "id": "Q07", "domain": "course",
+      "query": "beginner machine learning course, project based, finish in three months",
+      "relevance": {
+        "course:C001": 3, "course:C003": 3, "course:C018": 2,
+        "course:C007": 2, "course:C013": 1
+      }
+    },
+    {
+      "id": "Q08", "domain": "course",
+      "query": "a free NLP course with real coding, I already know Python",
+      "relevance": {
+        "course:C006": 3, "course:C015": 3, "course:C005": 2, "course:C030": 2
+      }
+    },
+    {
+      "id": "Q09", "domain": "course",
+      "query": "something under 4000 rupees that gives me a certificate and takes under 10 weeks",
+      "relevance": {
+        "course:C014": 3, "course:C017": 3, "course:C022": 2,
+        "course:C026": 2, "course:C023": 2, "course:C029": 2
+      }
+    },
+    {
+      "id": "Q10", "domain": "phone",
+      "query": "a phone under 30000 with the best possible camera and a big battery",
+      "relevance": {
+        "phone:PH-006": 3, "phone:PH-005": 3, "phone:PH-016": 2,
+        "phone:PH-009": 2, "phone:PH-018": 1
+      }
+    },
+    {
+      "id": "Q11", "domain": "phone",
+      "query": "a compact flagship under 200 grams, price is not a concern",
+      "relevance": {
+        "phone:PH-003": 3, "phone:PH-002": 3, "phone:PH-024": 2, "phone:PH-011": 1
+      }
+    },
+    {
+      "id": "Q12", "domain": "phone",
+      "query": "best gaming phone under 40000 with fast charging",
+      "relevance": {
+        "phone:PH-010": 3, "phone:PH-004": 3, "phone:PH-018": 2, "phone:PH-015": 1
+      }
+    },
+    {
+      "id": "Q13", "domain": "laptop",
+      "query": "a laptop under 70000 for programming, light enough to carry every day",
+      "relevance": {
+        "laptop:L008": 3, "laptop:L024": 3, "laptop:L018": 2, "laptop:L007": 1
+      }
+    },
+    {
+      "id": "Q14", "domain": "laptop",
+      "query": "best machine for training machine learning models, budget is 1.7 lakh",
+      "relevance": {
+        "laptop:L005": 3, "laptop:L014": 3, "laptop:L002": 2, "laptop:L019": 2, "laptop:L013": 1
+      }
+    },
+    {
+      "id": "Q15", "domain": "laptop",
+      "query": "something under 1.3 kg with all day battery for college",
+      "relevance": {
+        "laptop:L001": 3, "laptop:L009": 3, "laptop:L017": 3,
+        "laptop:L004": 2, "laptop:L022": 2, "laptop:L003": 2
+      }
+    },
+    {
+      "id": "Q16", "domain": "car",
+      "query": "family car under 15 lakh with 5 star safety and good mileage, no diesel",
+      "relevance": {
+        "car:C006": 3, "car:C002": 2, "car:C024": 2, "car:C011": 1, "car:C016": 1
+      }
+    },
+    {
+      "id": "Q17", "domain": "car",
+      "query": "an automatic seven seater under 32 lakh, comfortable for long drives",
+      "relevance": {
+        "car:C005": 3, "car:C004": 3, "car:C019": 1
+      }
+    },
+    {
+      "id": "Q18", "domain": "car",
+      "query": "electric SUV with over 400 km range under 26 lakh",
+      "relevance": {
+        "car:C025": 3, "car:C007": 3, "car:C006": 1
+      }
+    },
+    {
+      "id": "Q19", "domain": "bike",
+      "query": "a beginner friendly bike under 1.5 lakh with good mileage, not too heavy",
+      "relevance": {
+        "bike:B004": 3, "bike:B020": 3, "bike:B015": 2,
+        "bike:B003": 2, "bike:B009": 2, "bike:B012": 2
+      }
+    },
+    {
+      "id": "Q20", "domain": "bike",
+      "query": "comfortable highway cruiser with dual channel ABS under 2.5 lakh",
+      "relevance": {
+        "bike:B008": 3, "bike:B013": 3, "bike:B001": 2, "bike:B021": 2, "bike:B023": 2
+      }
+    },
+    {
+      "id": "Q21", "domain": "bike",
+      "query": "electric scooter for city commuting with the lowest running cost",
+      "relevance": {
+        "bike:B011": 3, "bike:B024": 3, "bike:B010": 2
+      }
+    }
+  ]
+}

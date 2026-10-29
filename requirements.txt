@@ -1,0 +1,18 @@
+# DebateRec — core dependencies (Windows + macOS + Linux)
+# Everything here ships as a prebuilt wheel. No compiler needed.
+
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+pydantic==2.10.4
+python-dotenv==1.0.1
+httpx==0.28.1
+numpy==2.2.1
+scikit-learn==1.6.0
+
+# --- Optional upgrades (not required to run) ---------------------------------
+# Dense semantic retrieval instead of the default lexical hybrid.
+# Downloads a ~90MB model on first use.
+#   pip install sentence-transformers
+#
+# Local LLM instead of the Gemini API — see https://ollama.com
+#   (no pip package needed; DebateRec talks to Ollama over HTTP)
